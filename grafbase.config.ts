@@ -1,21 +1,19 @@
-import { schema } from "grafbase";
+import { graph, config } from "@grafbase/sdk";
 
-const userSchema = schema({
-  models: {
-    User: {
-      fields: {
-        name: {
-          type: "String",
-          validation: {
-            length: {
-              min: 2,
-              max: 20,
-            },
-          },
-        },
-      },
-    },
-  },
+const g = graph.Standalone();
+
+const UserType = g.type("User", {
+  name: g.string().length({ min: 2, max: 20 }),
+  age: g.int().optional(),
+  profile: g.ref("Profile"),
+  parent: g.ref("User"),
 });
 
-export default userSchema;
+const ProfileType = g.type("Profile", {
+  bio: g.string().optional(),
+  user: g.ref("User"),
+});
+
+export default config({
+  graph: g,
+});

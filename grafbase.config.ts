@@ -1,11 +1,21 @@
-import { graph, config } from "@grafbase/sdk";
+import { schema } from "grafbase";
 
-const g = graph.Standalone();
-
-const User = g.model("User", {
-  name: g.string().length({ min: 2, max: 20 }),
+const userSchema = schema({
+  models: {
+    User: {
+      fields: {
+        name: {
+          type: "String",
+          validation: {
+            length: {
+              min: 2,
+              max: 20,
+            },
+          },
+        },
+      },
+    },
+  },
 });
 
-export default config({
-  graph: g,
-});
+export default userSchema;
